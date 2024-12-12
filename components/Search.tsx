@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { searchWithAI } from '@/services/ai';
-import type { SearchResult } from '@/services/ai';
+import { streamSearchWithAI } from '@/services/ai';
 import Markdown from './Markdown';
 import copy from 'clipboard-copy';
 import { useTranslations } from 'next-intl';
@@ -13,10 +12,10 @@ function stripMarkdown(text: string): string {
 }
 
 export default function Search() {
-  const t = useTranslations('search'); // Fix translations
+  const t = useTranslations('search');
   const locale = useLocale();
   const [query, setQuery] = useState('');
-  const [result, setResult] = useState<SearchResult | null>(null);
+  const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copying' | 'success' | 'error'>('idle');
@@ -35,11 +34,12 @@ export default function Search() {
 
     setLoading(true);
     setError(null);
-    setResult(null);
+    setContent('');
 
     try {
-      const searchResult = await searchWithAI(query, locale);
-      setResult(searchResult);
+      for await (const chunk of streamSearchWithAI(query, locale)) {
+        setContent(prev => prev + chunk);
+      }
     } catch (err) {
       setError(t('error.failed'));
       console.error('Search failed:', err);
@@ -49,15 +49,15 @@ export default function Search() {
   }, [query, locale, t]);
 
   const handleCopy = useCallback(async (isMarkdown: boolean) => {
-    if (!result) return;
+    if (!content) return;
 
     const type = isMarkdown ? 'markdown' : 'text';
     setLastCopyType(type);
     setCopyStatus('copying');
 
     try {
-      const content = isMarkdown ? result.content : stripMarkdown(result.content);
-      await copy(content);
+      const textToCopy = isMarkdown ? content : stripMarkdown(content);
+      await copy(textToCopy);
       setCopyStatus('success');
       setTimeout(() => {
         setCopyStatus('idle');
@@ -68,7 +68,7 @@ export default function Search() {
       setError(t('error.copyFailed'));
       setCopyStatus('error');
     }
-  }, [result, t]);
+  }, [content, t]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -100,12 +100,12 @@ export default function Search() {
         </div>
       )}
 
-      {result && !error && (
+      {content && !error && (
         <div className="relative bg-white rounded-lg shadow-lg p-6">
           <div className="flex space-x-2 mb-2">
             <button
               onClick={() => handleCopy(false)}
-              disabled={!result || copyStatus === 'copying'}
+              disabled={!content || copyStatus === 'copying'}
               className={`px-3 py-1 text-sm rounded ${
                 copyStatus === 'success' && lastCopyType === 'text'
                   ? 'bg-green-500 text-white'
@@ -123,7 +123,7 @@ export default function Search() {
             </button>
             <button
               onClick={() => handleCopy(true)}
-              disabled={!result || copyStatus === 'copying'}
+              disabled={!content || copyStatus === 'copying'}
               className={`px-3 py-1 text-sm rounded ${
                 copyStatus === 'success' && lastCopyType === 'markdown'
                   ? 'bg-green-500 text-white'
@@ -140,7 +140,7 @@ export default function Search() {
                 : t('copy.markdown')}
             </button>
           </div>
-          <Markdown content={result.content} className="mt-2" />
+          <Markdown content={content} className="mt-2" />
         </div>
       )}
     </div>

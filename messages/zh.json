@@ -1,0 +1,39 @@
+{
+  "header": {
+    "title": "OmniQuery",
+    "language": "选择语言"
+  },
+  "home": {
+    "title": "OmniQuery",
+    "description": "探索知识的无限可能，让AI助你解答一切疑惑",
+    "smartAnalysis": "智能分析",
+    "smartAnalysisDescription": "深度解析内容，提供全面的知识洞察",
+    "structuredPresentation": "结构化呈现",
+    "structuredPresentationDescription": "清晰的信息层次，轻松掌握要点",
+    "fastResponse": "快速响应",
+    "fastResponseDescription": "即时获取答案，高效学习探索"
+  },
+  "search": {
+    "placeholder": "输入您的问题...",
+    "button": "搜索",
+    "loading": "搜索中...",
+    "copy": {
+      "text": "复制文本",
+      "markdown": "复制Markdown",
+      "copying": "复制中...",
+      "success": "已复制"
+    },
+    "error": {
+      "empty": "请输入搜索内容",
+      "tooLong": "搜索内容过长，请限制在100字以内",
+      "failed": "搜索失败，请重试",
+      "copyFailed": "复制失败，请重试"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 OmniQuery. 保留所有权利。",
+    "terms": "服务条款",
+    "privacy": "隐私政策",
+    "contact": "联系我们"
+  }
+}

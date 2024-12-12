@@ -1,0 +1,39 @@
+{
+  "header": {
+    "title": "OmniQuery",
+    "language": "Select Language"
+  },
+  "home": {
+    "title": "OmniQuery",
+    "description": "Explore the limitless possibilities of knowledge, let AI assist you in answering all your queries",
+    "smartAnalysis": "Smart Analysis",
+    "smartAnalysisDescription": "Deeply analyze content, provide comprehensive knowledge insights",
+    "structuredPresentation": "Structured Presentation",
+    "structuredPresentationDescription": "Clear information hierarchy, making it easy to grasp key points",
+    "fastResponse": "Fast Response",
+    "fastResponseDescription": "Instant access to answers, efficient learning and exploration"
+  },
+  "search": {
+    "placeholder": "Enter your question...",
+    "button": "Search",
+    "loading": "Searching...",
+    "copy": {
+      "text": "Copy Text",
+      "markdown": "Copy Markdown",
+      "copying": "Copying...",
+      "success": "Copied!"
+    },
+    "error": {
+      "empty": "Please enter a search query",
+      "tooLong": "Search query is too long, please limit to 100 characters",
+      "failed": "Search failed, please try again",
+      "copyFailed": "Copy failed, please try again"
+    }
+  },
+  "footer": {
+    "copyright": " 2024 OmniQuery. All rights reserved.",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact Us"
+  }
+}
